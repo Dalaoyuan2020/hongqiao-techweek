@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>科鲸导游·三位一体架构确认</title>
+<style>
+  :root {
+    --bg: #f6f8fb; --card: #fff; --ink: #1a2332; --ink2: #5a6a80; --line: #e3e9f2;
+    --accent: #2f6fd6; --accent-soft: #eaf1fc; --warn: #b45309; --warn-soft: #fef3c7;
+    --ok: #15803d; --ok-soft: #dcfce7; --radius: 16px;
+    --shadow: 0 1px 3px rgba(16,32,64,.06), 0 8px 24px rgba(16,32,64,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f141c; --card: #171f2b; --ink: #e8edf5; --ink2: #93a3b8; --line: #2a3648;
+      --accent: #6d9ef2; --accent-soft: #1c2a42; --warn: #f5c064; --warn-soft: #3a2e14;
+      --ok: #6ee7a0; --ok-soft: #14301f;
+      --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", "Microsoft YaHei", sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.65; padding: 24px 16px 64px; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  h1 { font-size: 23px; } .sub { color: var(--ink2); font-size: 14px; margin: 4px 0 20px; }
+  section { margin-bottom: 30px; }
+  h2 { font-size: 17px; margin-bottom: 4px; }
+  .hint { color: var(--ink2); font-size: 13px; margin-bottom: 12px; }
+
+  .arch { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+  .mod { background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+  .mod .ico { font-size: 26px; }
+  .mod h3 { font-size: 16px; margin: 6px 0 2px; }
+  .mod .where { font-size: 12px; color: var(--accent); margin-bottom: 8px; }
+  .mod ul { margin-left: 16px; font-size: 13px; color: var(--ink2); }
+  .mod li + li { margin-top: 3px; }
+  .glue { background: var(--accent-soft); border: 2px dashed var(--accent); border-radius: var(--radius);
+    padding: 14px 18px; margin-top: 14px; font-size: 14px; }
+  .glue b { color: var(--accent); }
+
+  .opts { display: grid; gap: 10px; }
+  .opt { background: var(--card); border: 2px solid var(--line); border-radius: 12px; padding: 12px 16px;
+    cursor: pointer; transition: all .15s; }
+  .opt:hover { transform: translateX(3px); }
+  .opt.sel { border-color: var(--accent); background: var(--accent-soft); }
+  .opt.sel .ot::after { content: " ✓"; color: var(--accent); }
+  .ot { font-weight: 600; font-size: 15px; }
+  .od { font-size: 13px; color: var(--ink2); margin-top: 2px; }
+  textarea { width: 100%; min-height: 80px; background: var(--card); color: var(--ink); border: 2px solid var(--line);
+    border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 14px; resize: vertical; }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  .actions { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; margin-top: 18px; }
+  button.primary { background: var(--accent); color: #fff; border: none; border-radius: 12px; padding: 12px 26px;
+    font-size: 15px; font-weight: 600; cursor: pointer; }
+  .out { flex: 1; min-width: 260px; background: var(--card); border: 1px dashed var(--line); border-radius: 12px;
+    padding: 10px 14px; font-size: 13px; color: var(--ink2); font-family: ui-monospace, Menlo, monospace; white-space: pre-wrap; }
+  .risk { background: var(--warn-soft); color: var(--warn); border-radius: 12px; padding: 10px 16px; font-size: 13.5px; margin-top: 12px; }
+  footer { color: var(--ink2); font-size: 12px; margin-top: 36px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🧭 科鲸桌面导游机器人 · 三位一体总架构</h1>
+    <div class="sub">虹桥科技周硬件赛道 · 确认完这页，架构文档就定稿进仓库</div>
+  </header>
+
+  <section>
+    <h2>架构总览（我的理解，请核对）</h2>
+    <div class="hint">三位一体 = 脑 · 智库（说什么）＋ 体 · 载体（谁来说）＋ 场 · DEMO（在哪说、怎么玩）。集成层用 MCP 把三者串成一台会导览的机器人。</div>
+    <div class="arch">
+      <div class="mod">
+        <div class="ico">🧠</div>
+        <h3>脑 · 智库</h3>
+        <div class="where">mini · datawhale-wiki（Qoder 维护中）</div>
+        <ul>
+          <li>212 张卡：项目/活动/业务线/FAQ，四轴治理</li>
+          <li>ask.py 检索 + build.py 导出 + booth.html 离线页</li>
+          <li>职责：导游「说什么」的唯一真源</li>
+        </ul>
+      </div>
+      <div class="mod">
+        <div class="ico">🤖</div>
+        <h3>体 · 载体</h3>
+        <div class="where">Otto 电子件 + 科鲸壳 B 款（淘宝代打）</div>
+        <ul>
+          <li>ESP32-S3 + 4 舵机 + 圆屏：说话/表情/走路</li>
+          <li>xiaozhi.me 人设 =「科鲸导游」</li>
+          <li>可拆配件：导游帽 + 小旗</li>
+        </ul>
+      </div>
+      <div class="mod">
+        <div classico>🏟️</div>
+        <div class="ico">🏟️</div>
+        <h3>场 · DEMO 游戏场景</h3>
+        <div class="where">桌面地图垫 + 站点 + 互动机制（待你定形态）</div>
+        <ul>
+          <li>导游要有「可导的览」：站点=Datawhale 板块</li>
+          <li>游客动线：欢迎→带路→讲解→问答</li>
+          <li>职责：确保 3 分钟体验完整、评委可感</li>
+        </ul>
+      </div>
+    </div>
+    <div class="glue">
+      <b>集成层（把三体缝起来）</b>：xiaozhi.me 人设自带机器人动作 MCP（走路/转身/大笑，平台现成）；再挂一个自定义 MCP <b>guide_query</b> → 调智库 ask API。大模型端到端决策：游客提问 → 查智库 → 组织话术 → 下发动作。
+      <div class="risk">⚠️ 唯一技术风险：ESP32 只认 xiaozhi.me 云端，自定义 MCP 必须是公网可达的 URL——mini 在内网，需要穿透（家里有现成 VPS 可当出口）。这是下面 Q2 要定的事。</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Q1 · DEMO 场景形态（场怎么搭）</h2>
+    <div class="opts" id="q1">
+      <div class="opt" data-v="A 地图垫动线"><div class="ot">A · 桌面地图垫 + 站点动线</div><div class="od">A2 地图垫印 Datawhale「版图」，5-6 个站点牌，科鲸沿路线走站讲解，纯导览不打游戏。成本最低，故事最顺。</div></div>
+      <div class="opt" data-v="B 通关集章"><div class="ot">B · 地图垫 + 通关集章游戏</div><div class="od">在 A 基础上加游戏机制：游客答对站点的问答得「印章贴纸」，集满换小奖品（贴纸/徽章）。互动性最强，备物料稍多。</div></div>
+      <div class="opt" data-v="C 问答为主"><div class="ot">C · 不搭实体场景，纯互动问答</div><div class="od">科鲸站桩，游客自由提问，屏幕配表情字幕。省事但「导游」感弱，评委看到的更像音箱。</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Q2 · 智库 API 怎么让云端够得着</h2>
+    <div class="opts" id="q2">
+      <div class="opt" data-v="A VPS中转"><div class="ot">A · mini 跑服务 + 家里 VPS 穿透出口</div><div class="od">ask.py 包一层 HTTP 跑 mini，kl/la/shanghai VPS 选一台做 frp/反代出口。数据留在 mini，更新即生效。</div></div>
+      <div class="opt" data-v="B 静态部署"><div class="ot">B · build 导出静态 JSON 挂 VPS</div><div class="od">每次改智库后 build 导出 index.json 传 VPS，查询逻辑做成 VPS 上的轻函数。更稳（mini 挂了也不影响），但更新要传文件。</div></div>
+      <div class="opt" data-v="C 你定"><div class="ot">C · 技术细节你定，保证现场能用就行</div><div class="od">我按现场可靠性优先原则选，配置过程记录进仓库。</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Q3 · 比赛现场网络预案</h2>
+    <div class="opts" id="q3">
+      <div class="opt" data-v="A WiFi+热点备用"><div class="ot">A · 现场 WiFi 为主 + 手机热点备用</div><div class="od">ESP32 配网优先级：现场 WiFi → 热点；演示前实测切换。</div></div>
+      <div class="opt" data-v="B 全程热点"><div class="ot">B · 全程手机热点</div><div class="od">不赌现场网络，直接热点，简单可控。</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>补充（可选）</h2>
+    <textarea id="notes" placeholder="对架构的纠正、想法、分工建议……"></textarea>
+  </section>
+
+  <div class="actions">
+    <button class="primary" id="copy">生成决策摘要</button>
+    <div class="out" id="out">确认/选完点按钮，把摘要粘回给 Claude。</div>
+  </div>
+
+  <footer>nailong-mod · plan/gate_architecture.html · 2026-11-13</footer>
+</div>
+
+<script>
+  const state = {};
+  ['q1','q2','q3'].forEach(id => {
+    document.getElementById(id).querySelectorAll('.opt').forEach(el => {
+      el.addEventListener('click', () => {
+        document.getElementById(id).querySelectorAll('.opt').forEach(e => e.classList.remove('sel'));
+        el.classList.add('sel'); state[id] = el.dataset.v;
+      });
+    });
+  });
+  document.getElementById('copy').addEventListener('click', async () => {
+    const notes = document.getElementById('notes').value.trim();
+    const lines = [
+      '【三位一体架构确认】',
+      '架构总览理解：' + (state.q1 ? '按图确认' : '待核（见备注）'),
+      'Q1 DEMO形态：' + (state.q1 || '未选'),
+      'Q2 智库API：' + (state.q2 || '未选'),
+      'Q3 现场网络：' + (state.q3 || '未选'),
+      '补充：' + (notes || '无'),
+    ].join('\n');
+    const out = document.getElementById('out');
+    out.textContent = lines;
+    try { await navigator.clipboard.writeText(lines); out.textContent += '\n（已复制）'; } catch(e) {}
+  });
+</script>
+</body>
+</html>
