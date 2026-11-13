@@ -7,6 +7,9 @@
 
 以开源的**小智 AI Otto 双足机器人**（奶龙同款硬件：ESP32-S3 + 4 舵机 + 1.54 寸圆屏 + 云端大模型对话）为内部，重新设计 **Datawhale 科鲸造型外壳**——胸口圆屏显示表情，鱼鳍抱屏，头顶可换导游帽，鱼鳍可举小旗。赛后外壳模型与教程开源回馈社区。
 
+**三位一体架构**（详见 [docs/architecture.md](docs/architecture.md)，交接快照见 [HANDOFF.md](HANDOFF.md)）：
+脑 = 智库 [datawhale-wiki](https://github.com/Dalaoyuan2020/datawhale-wiki)（私有，212 卡）· 体 = 科鲸机器人 · 场 = 桌面地图垫导览 DEMO · 集成 = guide_query 自定义 MCP。
+
 ## 仓库结构
 
 ```
