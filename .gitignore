@@ -1,0 +1,6 @@
+.DS_Store
+nailong-models.zip
+*.pyc
+__pycache__/
+.venv/
+models/

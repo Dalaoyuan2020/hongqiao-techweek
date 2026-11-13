@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>科鲸外壳选型</title>
+<style>
+  :root {
+    --bg: #f6f8fb;
+    --card: #ffffff;
+    --ink: #1a2332;
+    --ink-2: #5a6a80;
+    --line: #e3e9f2;
+    --accent: #2f6fd6;
+    --accent-soft: #eaf1fc;
+    --warn: #b45309;
+    --warn-soft: #fef3c7;
+    --radius: 16px;
+    --shadow: 0 1px 3px rgba(16,32,64,.06), 0 8px 24px rgba(16,32,64,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f141c;
+      --card: #171f2b;
+      --ink: #e8edf5;
+      --ink-2: #93a3b8;
+      --line: #2a3648;
+      --accent: #6d9ef2;
+      --accent-soft: #1c2a42;
+      --warn: #f5c064;
+      --warn-soft: #3a2e14;
+      --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    padding: 24px 16px 64px;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; }
+  header { margin-bottom: 20px; }
+  h1 { font-size: 24px; letter-spacing: .5px; }
+  .sub { color: var(--ink-2); font-size: 14px; margin-top: 4px; }
+  .banner {
+    background: var(--warn-soft); color: var(--warn);
+    border-radius: 12px; padding: 10px 16px; font-size: 14px;
+    margin: 16px 0 24px; display: flex; gap: 8px; align-items: baseline;
+  }
+  .banner b { flex-shrink: 0; }
+  section { margin-bottom: 32px; }
+  h2 { font-size: 17px; margin-bottom: 4px; }
+  .hint { color: var(--ink-2); font-size: 13px; margin-bottom: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--card); border: 2px solid var(--line); border-radius: var(--radius);
+    padding: 14px; cursor: pointer; transition: border-color .15s, transform .15s, box-shadow .15s;
+    box-shadow: var(--shadow); position: relative;
+  }
+  .card:hover { transform: translateY(-2px); }
+  .card.sel { border-color: var(--accent); background: var(--accent-soft); }
+  .card.sel::after {
+    content: "✓ 已选"; position: absolute; top: 10px; right: 10px;
+    background: var(--accent); color: #fff; font-size: 12px;
+    padding: 2px 10px; border-radius: 999px;
+  }
+  .card img {
+    width: 100%; aspect-ratio: 1; object-fit: cover;
+    border-radius: 10px; background: #fff; display: block;
+  }
+  .card h3 { font-size: 16px; margin: 12px 0 2px; }
+  .tag { display: inline-block; font-size: 12px; color: var(--ink-2); border: 1px solid var(--line); border-radius: 6px; padding: 0 8px; margin-left: 6px; vertical-align: 2px; }
+  .card ul { margin: 8px 0 0 18px; font-size: 13px; color: var(--ink-2); }
+  .card li + li { margin-top: 2px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    background: var(--card); border: 2px solid var(--line); border-radius: 999px;
+    padding: 8px 18px; font-size: 14px; cursor: pointer; transition: all .15s;
+  }
+  .chip.sel { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  textarea {
+    width: 100%; min-height: 88px; background: var(--card); color: var(--ink);
+    border: 2px solid var(--line); border-radius: 12px; padding: 12px 14px;
+    font: inherit; font-size: 14px; resize: vertical;
+  }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  .actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 20px; }
+  button.primary {
+    background: var(--accent); color: #fff; border: none; border-radius: 12px;
+    padding: 12px 28px; font-size: 15px; font-weight: 600; cursor: pointer;
+  }
+  button.primary:active { transform: scale(.98); }
+  .out {
+    flex: 1; min-width: 260px; background: var(--card); border: 1px dashed var(--line);
+    border-radius: 12px; padding: 10px 14px; font-size: 13px; color: var(--ink-2);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; word-break: break-all;
+  }
+  footer { color: var(--ink-2); font-size: 12px; margin-top: 40px; text-align: center; }
+  @media (max-width: 640px) {
+    body { padding: 16px 12px 48px; }
+    h1 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🐋 科鲸桌面机器人 · 外壳概念选型</h1>
+    <div class="sub">底座：小智 AI Otto（奶龙同款）· 只重做 01 外壳件，其余 7 件不动 · 本页决定造型方向</div>
+  </header>
+
+  <div class="banner"><b>⏱ 赛程</b>虹桥黑客松 11/20–22。选型今天定 → 11/16 前第一版外壳发打印 → 11/17–18 试装修公差。</div>
+
+  <section>
+    <h2>① 造型方向（选 1 个）</h2>
+    <div class="hint">点击卡片选中。A/B/C 均以「胸口圆屏 + 鱼鳍抱屏 + 白腿蓝脚」为骨架，差别在风格与叙事。</div>
+    <div class="grid" id="concepts">
+      <div class="card" data-v="A">
+        <img src="A_ip_whale.png" alt="A IP还原款">
+        <h3>A · IP 还原款 <span class="tag">贴官方形象</span></h3>
+        <ul>
+          <li>不倒翁比例 + 波浪尾，最接近官网蓝鲸 logo</li>
+          <li>Datawhale 一眼认得出，开源回馈故事最顺</li>
+          <li>造型规整，打印风险最低</li>
+        </ul>
+      </div>
+      <div class="card" data-v="B">
+        <img src="B_qwhale.png" alt="B Q版萌系款">
+        <h3>B · Q 版萌系款 <span class="tag">可爱优先</span></h3>
+        <ul>
+          <li>更圆更玩具化，路演吸睛度最高</li>
+          <li>大曲面多，支撑和打磨工作量略大</li>
+          <li>和奶龙的「萌」路线一脉相承</li>
+        </ul>
+      </div>
+      <div class="card" data-v="C">
+        <img src="C_guide_whale.png" alt="C 导游款">
+        <h3>C · 导游款 <span class="tag">导游帽+小旗</span></h3>
+        <ul>
+          <li>导游帽 + 红旗，「桌面导游」定位一眼可读</li>
+          <li>帽子和旗是独立小件，掉落风险要处理</li>
+          <li>最贴比赛叙事，社区版可后续去帽出素款</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>② 打印资源（选 1 个）</h2>
+    <div class="hint">决定倒排节奏：自印可以当晚迭代，代打每轮 +1–2 天。</div>
+    <div class="chips" id="printing">
+      <div class="chip" data-v="309自印">309 / 学校打印机</div>
+      <div class="chip" data-v="同城代打">同城打印店代打</div>
+      <div class="chip" data-v="淘宝代打">淘宝代打（快递）</div>
+      <div class="chip" data-v="还没有">还没有，帮我规划</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>③ 补充说明（可选）</h2>
+    <div class="hint">想微调的点直接写：配色、表情屏内容、导游帽样式、尾巴去留……</div>
+    <textarea id="notes" placeholder="例如：A 的水柱去掉、屏幕位置再高一点、导游帽换成蓝色……"></textarea>
+  </section>
+
+  <div class="actions">
+    <button class="primary" id="copy">生成决策摘要</button>
+    <div class="out" id="out">选完点按钮，把生成的摘要粘回给 Claude。</div>
+  </div>
+
+  <footer>nailong-mod · 概念图讯飞 Qwen-Image-2512 生成 · 2026-11-13</footer>
+</div>
+
+<script>
+  const state = { concept: null, print: null };
+  function wireGroup(id, key) {
+    const box = document.getElementById(id);
+    box.querySelectorAll('[data-v]').forEach(el => {
+      el.addEventListener('click', () => {
+        box.querySelectorAll('[data-v]').forEach(e => e.classList.remove('sel'));
+        el.classList.add('sel');
+        state[key] = el.dataset.v;
+      });
+    });
+  }
+  wireGroup('concepts', 'concept');
+  wireGroup('printing', 'print');
+  document.getElementById('copy').addEventListener('click', async () => {
+    const notes = document.getElementById('notes').value.trim();
+    const lines = [
+      '【科鲸外壳选型】',
+      '造型方向：' + (state.concept || '（未选）'),
+      '打印资源：' + (state.print || '（未选）'),
+      '补充说明：' + (notes || '无'),
+    ].join('\n');
+    const out = document.getElementById('out');
+    out.textContent = lines;
+    try { await navigator.clipboard.writeText(lines); out.textContent += '\n（已复制到剪贴板）'; } catch (e) {}
+  });
+</script>
+</body>
+</html>
