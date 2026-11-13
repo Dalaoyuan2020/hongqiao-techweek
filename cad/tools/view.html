@@ -1,0 +1,60 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>loading</title>
+<style>html,body{margin:0;background:#f4f6f8;overflow:hidden}#lab{position:fixed;left:10px;top:8px;font:14px -apple-system,sans-serif;color:#334}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head><body><div id="lab"></div>
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+// ?parts=file.stl:color:dx,dy,dz;...&view=front|back|left|right|top|bottom|iso|iso2&label=text&clip=y
+const q = new URLSearchParams(location.search);
+const parts = (q.get('parts')||'').split(';').filter(Boolean);
+const view = q.get('view')||'iso';
+document.getElementById('lab').textContent = q.get('label')||view;
+const W = innerWidth, H = innerHeight;
+const r = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
+r.setSize(W,H); r.setPixelRatio(2); document.body.appendChild(r.domElement);
+r.localClippingEnabled = true;
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xf4f6f8);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 1.6));
+const d1 = new THREE.DirectionalLight(0xffffff, 1.6); d1.position.set(-1,-2,2.5); scene.add(d1);
+const d2 = new THREE.DirectionalLight(0xffffff, 0.6); d2.position.set(2,1,1); scene.add(d2);
+const clipY = q.get('clipy'); const clipX = q.get('clipx');
+const planes = [];
+if (clipY!==null) planes.push(new THREE.Plane(new THREE.Vector3(0,-1,0), parseFloat(clipY)));
+if (clipX!==null) planes.push(new THREE.Plane(new THREE.Vector3(-1,0,0), parseFloat(clipX)));
+const loader = new STLLoader(); const group = new THREE.Group(); scene.add(group);
+let n = 0;
+for (const p of parts) {
+  const [file, col, off] = p.split(':');
+  if (file.endsWith('.glb')) {
+    new GLTFLoader().load(file, gl => {
+      gl.scene.traverse(o => { if (o.isMesh) { o.geometry.computeVertexNormals(); o.material = new THREE.MeshStandardMaterial({vertexColors:true, roughness:.5, metalness:.0, side:THREE.DoubleSide, clippingPlanes: planes}); } });
+      const g2 = gl.scene; if (off) { const [x,y,z] = off.split(',').map(Number); g2.position.set(x,y,z); }
+      group.add(g2); if (++n === parts.length) done();
+    });
+    continue;
+  }
+  loader.load(file, g => {
+    g.computeVertexNormals();
+    const mat = new THREE.MeshStandardMaterial({color: new THREE.Color('#'+(col||'88aacc')), roughness:.55, metalness:.05, side:THREE.DoubleSide, clippingPlanes: planes});
+    const mesh = new THREE.Mesh(g, mat);
+    if (off) { const [x,y,z] = off.split(',').map(Number); mesh.position.set(x,y,z); }
+    group.add(mesh);
+    if (++n === parts.length) done();
+  });
+}
+function done(){
+  const box = new THREE.Box3().setFromObject(group); const c = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3()).length();
+  const s = size*0.62;
+  const cam = new THREE.OrthographicCamera(-s*W/H, s*W/H, s, -s, -1000, 1000);
+  const dirs = {front:[0,-1,0], back:[0,1,0], left:[-1,0,0], right:[1,0,0], top:[0,0,1], bottom:[0,0,-1], iso:[-0.8,-1,0.65], iso2:[0.9,0.8,0.6], iso3:[0.8,-1,0.5]};
+  const v = new THREE.Vector3(...(dirs[view]||dirs.iso)).normalize();
+  cam.position.copy(c).addScaledVector(v, 300);
+  cam.up.set(0,0,1); if (view==='top'||view==='bottom') cam.up.set(0,1,0);
+  cam.lookAt(c);
+  r.render(scene, cam); document.title = 'done';
+}
+</script></body></html>

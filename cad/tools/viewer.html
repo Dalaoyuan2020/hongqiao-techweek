@@ -1,0 +1,50 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>科鲸 3D 查看</title>
+<style>
+html,body{margin:0;height:100%;background:#eef1f5;font-family:-apple-system,"PingFang SC",sans-serif;overflow:hidden}
+#bar{position:fixed;left:12px;top:10px;background:#fffd;border-radius:10px;padding:10px 14px;box-shadow:0 2px 10px #0002;font-size:14px;color:#223;line-height:1.7}
+#bar b{color:#17365d} label{margin-right:12px;cursor:pointer} button{margin:4px 6px 0 0;padding:4px 10px;border:1px solid #9ab;border-radius:6px;background:#fff;cursor:pointer}
+#hint{position:fixed;right:12px;bottom:10px;color:#556;font-size:13px}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head><body>
+<div id="bar"><b id="title">科鲸 3D 查看</b><br>
+<label><input type="checkbox" id="cLegs" checked> 腿和脚</label><label><input type="checkbox" id="cBase"> 底座</label><label><input type="checkbox" id="cRot"> 自动旋转</label><br>
+<button data-v="front">正面</button><button data-v="iso">斜前</button><button data-v="left">左侧</button><button data-v="right">右侧</button><button data-v="back">背面</button><button data-v="top">俯视</button>
+</div>
+<div id="hint">左键拖动旋转 · 滚轮缩放 · 右键平移</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const q = new URLSearchParams(location.search);
+const shell = q.get('shell') || '/cad/kejing_shell_v2e_paint.glb';
+if (q.get('title')) document.getElementById('title').textContent = q.get('title');
+const r = new THREE.WebGLRenderer({antialias:true}); r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xeef1f5);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 1.5));
+const d1 = new THREE.DirectionalLight(0xffffff, 1.7); d1.position.set(-120, -200, 260); scene.add(d1);
+const d2 = new THREE.DirectionalLight(0xffffff, 0.6); d2.position.set(200, 150, 100); scene.add(d2);
+const grid = new THREE.GridHelper(300, 30, 0xb8c2cc, 0xd5dbe1); grid.rotation.x = Math.PI / 2; grid.position.z = -47.6; scene.add(grid);
+const cam = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 1, 5000); cam.up.set(0, 0, 1);
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.set(0, 5, 35); ctl.enableDamping = true;
+const views = {front:[0,-1,0.12], iso:[-0.75,-1,0.55], left:[-1,0,0.1], right:[1,0,0.1], back:[0,1,0.15], top:[0,-0.01,1]};
+function setView(v){ const d = new THREE.Vector3(...views[v]).normalize(); cam.position.copy(ctl.target).addScaledVector(d, 520); ctl.update(); }
+setView('iso');
+document.querySelectorAll('button[data-v]').forEach(b => b.onclick = () => setView(b.dataset.v));
+const std = (c) => new THREE.MeshStandardMaterial({color: c, roughness: .6, metalness: 0});
+const groups = {legs: new THREE.Group(), base: new THREE.Group()}; scene.add(groups.legs); scene.add(groups.base); groups.base.visible = false;
+const stl = new STLLoader();
+function addSTL(url, color, grp, off){ stl.load(url, g => { g.computeVertexNormals(); const m = new THREE.Mesh(g, std(color)); if (off) m.position.set(...off); grp.add(m); }); }
+new GLTFLoader().load(shell, gl => { gl.scene.traverse(o => { if (o.isMesh) { o.geometry.computeVertexNormals(); o.material = new THREE.MeshStandardMaterial({vertexColors:true, roughness:.55, metalness:0}); } }); scene.add(gl.scene); });
+addSTL('/cad/renders/leg_R.stl', 0xf2f2f2, groups.legs); addSTL('/cad/renders/leg_L.stl', 0xf2f2f2, groups.legs);
+addSTL('/cad/renders/foot_R.stl', 0x3d8fe0, groups.legs); addSTL('/cad/renders/foot_L.stl', 0x3d8fe0, groups.legs);
+addSTL('/models/02-base.stl', 0xdddddd, groups.base, [-1.61, 6.66, 0]);
+document.getElementById('cLegs').onchange = e => groups.legs.visible = e.target.checked;
+document.getElementById('cBase').onchange = e => groups.base.visible = e.target.checked;
+const cRot = document.getElementById('cRot');
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+(function loop(){ requestAnimationFrame(loop); if (cRot.checked) { const t = ctl.target, p = cam.position.clone().sub(t); p.applyAxisAngle(new THREE.Vector3(0,0,1), 0.006); cam.position.copy(t).add(p); } ctl.update(); r.render(scene, cam); })();
+</script></body></html>

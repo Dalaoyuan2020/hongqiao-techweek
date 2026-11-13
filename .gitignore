@@ -4,3 +4,12 @@ nailong-models.zip
 __pycache__/
 .venv/
 models/
+
+# 含原版奶龙几何（版权），只在群内/本地流转，不进公开仓
+cad/*.stl
+cad/*.3mf
+cad/analysis/
+cad/renders/
+cad/zones/
+cad/*.glb
+cad/gen3d/

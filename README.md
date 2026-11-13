@@ -26,8 +26,19 @@
 │   ├── print_order.md        # 代打清单与下单话术
 │   └── nailong_wiki_notes.md # 奶龙机器人 Wiki 情报摘录
 ├── plan/timeline.md          # 赛前倒排计划
-└── cad/                      # 新壳模型（建模产出放这里）
+└── cad/                      # 科鲸壳生成脚本、切片说明（STL 含原版几何，不入库，见 cad/README.md）
 ```
+
+## 外壳最终版 v2f（2026-11-13）
+
+![科鲸 v2f](docs/images/kejing_v2f_final.jpg)
+
+- 造型：B 盲盒萌系（效果图 `docs/images/concept_B_dome.jpg`）→ 混元 3D 转模型 → 程序拼上奶龙原版接口（底座腔体、卡销、屏幕窗口逐面照抄原壳）。
+- 嘴是 C 款大开口笑加舌头（三选一见 `docs/images/mouth_options.jpg`），尾巴重新建模成圆润的小尾巴。眼睛、腮红、嘴的颜色按建模的真实轮廓上色，偏差不超过 0.6 mm（`docs/images/color_alignment.jpg`）。
+- 打印友好：腔体顶改成 45° 斜顶，不用填支撑；入口有 0.8 mm 防象脚倒角。20 项自动检查全过（`cad/kejing_shell_v2f_CHECKS.md`）。
+- 颜色：A 拓竹 AMS 四色直出 / B 单色加描边槽手绘 / C 纯色，三个版本。切片参数见 `cad/PRINT_GUIDE.md`。
+- 实测接口（纠正了 `docs/interface_spec.md` 里屏幕位置等说法）：`docs/shell_interface_measured.md`。
+- **STL 文件不在本仓库**（含奶龙原版接口几何）：在群里拿打印包 `kejing_v2f.zip`，或者下载奶龙模型包后按 `cad/README.md` 的流水线自己生成。
 
 ## 技术底座（内部已完成，不改动）
 
