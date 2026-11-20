@@ -1,0 +1,13 @@
+--- a/main/idf_component.yml
++++ b/main/idf_component.yml
+@@ -31,8 +31,8 @@
+   lvgl/lvgl: ~9.3.0
+   esp_lvgl_port: ~2.6.0
+   espressif/esp_io_expander_tca95xx_16bit: ^2.0.0
+-  espressif2022/image_player: ==1.1.0~1
+-  espressif2022/esp_emote_gfx: ==1.0.0~2
++  # espressif2022/image_player: ==1.1.0~1   # 组件库已下架这一版；Otto 不用（只有 esp-hi 用）
++  # espressif2022/esp_emote_gfx: ==1.0.0~2  # 组件库已下架这一版；Otto 不用（只有 echoear 用）
+   espressif/adc_mic: ^0.2.1
+   espressif/esp_mmap_assets: '>=1.2'
+   txp666/otto-emoji-gif-component: ~1.0.2

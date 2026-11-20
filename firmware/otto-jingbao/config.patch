@@ -1,0 +1,19 @@
+--- a/main/boards/otto-robot/config.json
++++ b/main/boards/otto-robot/config.json
+@@ -4,7 +4,14 @@
+         {
+             "name": "otto-robot",
+             "sdkconfig_append": [
++                "CONFIG_USE_AFE_WAKE_WORD=n",
++                "CONFIG_USE_CUSTOM_WAKE_WORD=y",
++                "CONFIG_CUSTOM_WAKE_WORD=\"ni hao jing bao\"",
++                "CONFIG_CUSTOM_WAKE_WORD_DISPLAY=\"你好鲸宝\"",
++                "CONFIG_CUSTOM_WAKE_WORD_THRESHOLD=20",
++                "CONFIG_PARTITION_TABLE_CUSTOM_FILENAME=\"partitions/v1/16m_custom_wakeword.csv\"",
++                "CONFIG_SR_MN_CN_MULTINET7_QUANT=y"
+             ]
+         }
+     ]
+-}
+\ No newline at end of file
++}

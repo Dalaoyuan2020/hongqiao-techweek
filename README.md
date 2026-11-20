@@ -26,7 +26,8 @@
 │   ├── print_order.md        # 代打清单与下单话术
 │   └── nailong_wiki_notes.md # 奶龙机器人 Wiki 情报摘录
 ├── plan/timeline.md          # 赛前倒排计划
-└── cad/                      # 科鲸壳生成脚本、切片说明（STL 含原版几何，不入库，见 cad/README.md）
+├── cad/                      # 科鲸壳生成脚本、切片说明（STL 含原版几何，不入库，见 cad/README.md）
+└── firmware/otto-jingbao/    # ⭐ 机器人固件：唤醒词「你好鲸宝」，现场烧录/恢复/重编步骤（队友接手看这里）
 ```
 
 ## 外壳最终版 v2f（2026-11-13）
